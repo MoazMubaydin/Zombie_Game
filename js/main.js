@@ -39,10 +39,10 @@ class Player {
     }
 }
 
-class Zombies{
-    constructor(){
-        this.width = 2;
-        this.height = 2;
+class Zombies {
+    constructor() {
+        this.width = 1;
+        this.height = 1.5;
         this.positionX;
         this.positionY;
         this.spawnZombie();
@@ -50,7 +50,7 @@ class Zombies{
     }
     createDomElements() {
         this.domElement = document.createElement("div");
-        this.domElement.classList.add("zombie") ;
+        this.domElement.classList.add("zombie");
         this.domElement.style.width = this.width + "em";
         this.domElement.style.height = this.height + "em";
         this.domElement.style.left = this.positionX + "vw";
@@ -59,9 +59,9 @@ class Zombies{
         const game = document.getElementById("gameBoard");
         game.appendChild(this.domElement);
     }
-    spawnZombie(){
-        this.positionX = Math.floor(Math.random() * (100 - this.width + 1) );
-        this.positionY = Math.floor(Math.random() * (100 - this.height + 1) );
+    spawnZombie() {
+        this.positionX = Math.floor(Math.random() * (100 - this.width + 1));
+        this.positionY = Math.floor(Math.random() * (100 - this.height + 1));
     }
     moveUp() {
         this.positionY++;
@@ -82,44 +82,102 @@ class Zombies{
         this.domElement.style.left = this.positionX + "vw";
     }
 
-    zombieMovment(playerPositionX, playerPosistionY){
-        if(this.positionX > playerPositionX){
+    /*zombieMovment(playerPositionX, playerPositionY) {
+        if (playerPositionX < this.positionX) {
             this.moveLeft();
-        }else if (this.positionX < playerPositionX){
+        } else if (playerPositionX > this.positionX) {
             this.moveRight();
+        } else if (playerPositionY < this.positionY) {
+            
+            this.moveDown();
+        } else if (playerPositionY > this.positionY) {
+            this.moveUp();
         }
-
-
-    }
+    }*/
 }
 
 
 let player = new Player;
-let zombie = [];
+let zombies = [];
 
 let spawn = setInterval(() => {
-    if (zombie.length < 100) {
-        zombie.push(new Zombies)
+    if (zombies.length < 500) {
+        zombies.push(new Zombies)
     } else {
         clearInterval(spawn)
     }
+    
 }, 100);
 
 
+function updateZombie() {
 
+        zombies.forEach((zombie) => {
+            
+            if (player.positionX < zombie.positionX && player.positionY < zombie.positionY) {
+                zombie.moveLeft();
+                zombie.moveDown();
+            } if (player.positionX > zombie.positionX && player.positionY < zombie.positionY) {
+                zombie.moveRight();
+                zombie.moveDown();
 
-
-
-document.addEventListener("keydown", (e) => {
-    if (e.code === "ArrowLeft") {
-        player.moveLeft();
-    } else if (e.code === "ArrowRight"  ) {
-        player.moveRight();
-
-    }else if(e.code === "ArrowUp"){
-        player.moveUp();
+            } if (player.positionX < zombie.positionX && player.positionY > zombie.positionY) {
+                zombie.moveLeft();
+                zombie.moveUp();
+            } if (player.positionX > zombie.positionX && player.positionY > zombie.positionY) {
+                zombie.moveRight();
+                zombie.moveUp();
+            }
+            if (
+                player.positionX < zombie.positionX + zombie.width &&
+                player.positionX + player.width > zombie.positionX &&
+                player.positionY < zombie.positionY + zombie.height &&
+                player.positionY + player.height > zombie.positionY
+            ){
+                console.log("game over");
+                location.href = "gameover.html";
+            }
         
-    }else if(e.code === "ArrowDown"){
+     
+    })
+    setTimeout(() => {
+            requestAnimationFrame(updateZombie)
+
+    }, (100));
+}
+
+
+const keysPressed = {};
+
+// Track key states
+document.addEventListener("keydown", (e) => {
+    keysPressed[e.code] = true;
+});
+
+document.addEventListener("keyup", (e) => {
+    keysPressed[e.code] = false;
+});
+
+// Function to update player position
+function updatePlayer() {
+    if (keysPressed["ArrowLeft"] && player.positionX > 0) {
+        player.moveLeft();
+    }
+    if (keysPressed["ArrowRight"] && player.positionX < 100) {
+        player.moveRight();
+    }
+    if (keysPressed["ArrowUp"]&& player.positionY < 100) {
+        player.moveUp();
+    }
+    if (keysPressed["ArrowDown"]&& player.positionY > 0) {
         player.moveDown();
     }
-});
+
+    // Request the next animation frame
+    setTimeout(() => {
+        requestAnimationFrame(updatePlayer)
+
+}, (50));}
+requestAnimationFrame(updatePlayer);
+
+requestAnimationFrame(updateZombie);
