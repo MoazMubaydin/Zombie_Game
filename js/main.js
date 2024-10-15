@@ -1,149 +1,52 @@
-class Player {
-    constructor() {
-        this.width = 1;
-        this.height = 1.5;
-        this.positionX = 50 - this.width / 2;
-        this.positionY = 50 - this.height / 2;
-        this.createDomElements();
-    }
-    createDomElements() {
-        this.domElement = document.createElement("div");
-        this.domElement.id = "player";
-        this.domElement.style.width = this.width + "em";
-        this.domElement.style.height = this.height + "em";
-        this.domElement.style.left = this.positionX + "vw";
-        this.domElement.style.bottom = this.positionY + "vh";
-
-        const game = document.getElementById("gameBoard");
-        game.appendChild(this.domElement);
-    }
-
-
-    moveUp() {
-        this.positionY++;
-        this.domElement.style.bottom = this.positionY + "vh";
-    }
-
-    moveDown() {
-        this.positionY--;
-        this.domElement.style.bottom = this.positionY + "vh";
-    }
-    moveLeft() {
-        this.positionX--;
-        this.domElement.style.left = this.positionX + "vw";
-
-    }
-    moveRight() {
-        this.positionX++;
-        this.domElement.style.left = this.positionX + "vw";
-    }
-}
-
-class Zombies {
-    constructor() {
-        this.width = 1;
-        this.height = 1.5;
-        this.positionX;
-        this.positionY;
-        this.spawnZombie();
-        this.createDomElements();
-    }
-    createDomElements() {
-        this.domElement = document.createElement("div");
-        this.domElement.classList.add("zombie");
-        this.domElement.style.width = this.width + "em";
-        this.domElement.style.height = this.height + "em";
-        this.domElement.style.left = this.positionX + "vw";
-        this.domElement.style.bottom = this.positionY + "vh";
-
-        const game = document.getElementById("gameBoard");
-        game.appendChild(this.domElement);
-    }
-    spawnZombie() {
-        this.positionX = Math.floor(Math.random() * (100 - this.width + 1));
-        this.positionY = Math.floor(Math.random() * (100 - this.height + 1));
-    }
-    moveUp() {
-        this.positionY++;
-        this.domElement.style.bottom = this.positionY + "vh";
-    }
-
-    moveDown() {
-        this.positionY--;
-        this.domElement.style.bottom = this.positionY + "vh";
-    }
-    moveLeft() {
-        this.positionX--;
-        this.domElement.style.left = this.positionX + "vw";
-
-    }
-    moveRight() {
-        this.positionX++;
-        this.domElement.style.left = this.positionX + "vw";
-    }
-
-    /*zombieMovment(playerPositionX, playerPositionY) {
-        if (playerPositionX < this.positionX) {
-            this.moveLeft();
-        } else if (playerPositionX > this.positionX) {
-            this.moveRight();
-        } else if (playerPositionY < this.positionY) {
-            
-            this.moveDown();
-        } else if (playerPositionY > this.positionY) {
-            this.moveUp();
-        }
-    }*/
-}
 
 
 let player = new Player;
 let zombies = [];
 
 let spawn = setInterval(() => {
-    if (zombies.length < 500) {
+    //if there is more than 100 zombies they would despawn and respawn 
+    if (zombies.length <= 100) {
         zombies.push(new Zombies)
-    } else {
-        clearInterval(spawn)
-    }
+    } 
     
 }, 100);
 
-
+let frameZombie = 0;
 function updateZombie() {
+        // makes the zombie follow the player
 
+        frames++;
+        if(frames % 10 === 0){
         zombies.forEach((zombie) => {
             
-            if (player.positionX < zombie.positionX && player.positionY < zombie.positionY) {
+            if (player.positionX < zombie.positionX ) {
                 zombie.moveLeft();
-                zombie.moveDown();
-            } if (player.positionX > zombie.positionX && player.positionY < zombie.positionY) {
-                zombie.moveRight();
+            } if (player.positionY < zombie.positionY) {
                 zombie.moveDown();
 
-            } if (player.positionX < zombie.positionX && player.positionY > zombie.positionY) {
-                zombie.moveLeft();
+            } if (player.positionY > zombie.positionY) {
                 zombie.moveUp();
-            } if (player.positionX > zombie.positionX && player.positionY > zombie.positionY) {
+            } if (player.positionX > zombie.positionX) {
                 zombie.moveRight();
-                zombie.moveUp();
             }
+            // Detects Collision between zombie and player
             if (
-                player.positionX < zombie.positionX + zombie.width &&
+                player.positionX  < zombie.positionX + zombie.width &&
                 player.positionX + player.width > zombie.positionX &&
                 player.positionY < zombie.positionY + zombie.height &&
                 player.positionY + player.height > zombie.positionY
             ){
                 console.log("game over");
-                location.href = "gameover.html";
-            }
+              //  location.href = "gameover.html";
+           } 
         
      
-    })
-    setTimeout(() => {
+    })}
+    //requestes antimation fram with delay to make it run at a reasnobale speed
+    
             requestAnimationFrame(updateZombie)
 
-    }, (100));
+  
 }
 
 
@@ -157,27 +60,51 @@ document.addEventListener("keydown", (e) => {
 document.addEventListener("keyup", (e) => {
     keysPressed[e.code] = false;
 });
+let frames = 0;
 
 // Function to update player position
 function updatePlayer() {
-    if (keysPressed["ArrowLeft"] && player.positionX > 0) {
+    frames++;
+    if(frames % 3 === 0){
+        
+    
+    if (keysPressed["ArrowLeft"] && player.positionX > 0 ) {
         player.moveLeft();
     }
-    if (keysPressed["ArrowRight"] && player.positionX < 100) {
+    if (keysPressed["ArrowRight"] && player.positionX < 100 - player.width) {
         player.moveRight();
     }
     if (keysPressed["ArrowUp"]&& player.positionY < 100) {
         player.moveUp();
     }
-    if (keysPressed["ArrowDown"]&& player.positionY > 0) {
+    if (keysPressed["ArrowDown"]&& player.positionY > 0 + player.width) {
         player.moveDown();
     }
-
-    // Request the next animation frame
-    setTimeout(() => {
+    }
+    // Request the next animation frame 
+    
+   
+        
+    
+    
         requestAnimationFrame(updatePlayer)
 
-}, (50));}
+}
+
 requestAnimationFrame(updatePlayer);
 
 requestAnimationFrame(updateZombie);
+
+
+/*
+    1) zombies and player arent very smooth, can i make it better?
+    2) page still moves a bit to the bottom and right side. why?
+    3) how to create a spawn free zone around the player? (tried using reverse detection)
+    4) better to use dispaly hidden than new page to save a score(when i make one)
+
+
+
+    Score:
+    - 1) localstorage + redirect
+    - 2) dom manipulation
+ */
