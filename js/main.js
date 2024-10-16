@@ -13,7 +13,7 @@ function updatePlayer() {
         if (keysPressed["ArrowUp"] && player.positionY < 100) {
             player.moveUp();
         }
-        if (keysPressed["ArrowDown"] && player.positionY > 0 + player.width) {
+        if (keysPressed["ArrowDown"] && player.positionY > 0) {
             player.moveDown();
         }
     }
@@ -27,18 +27,81 @@ function updateZombie() {
     // makes the zombie follow the player
 
     frames++;
-    if (frames % 8 === 0) {
+    if (frames % 10 === 0) {
         zombies.forEach((zombie) => {
+            let randomMovement = Math.floor(Math.random() * 10);
+            if (randomMovement > 5) {
 
-            if (player.positionX < zombie.positionX) {
-                zombie.moveLeft();
-            } if (player.positionY < zombie.positionY) {
-                zombie.moveDown();
+                if (player.positionX < zombie.positionX) {
+                    zombie.moveLeft();
+                } if (player.positionY < zombie.positionY) {
+                    zombie.moveDown();
 
-            } if (player.positionY > zombie.positionY) {
-                zombie.moveUp();
-            } if (player.positionX > zombie.positionX) {
-                zombie.moveRight();
+                } if (player.positionY > zombie.positionY) {
+                    zombie.moveUp();
+                } if (player.positionX > zombie.positionX) {
+                    zombie.moveRight();
+                }
+            } else if (randomMovement === 4) {
+                setInterval(() => {
+                    zombie.moveLeft();
+
+                }, 3000);
+            } else if (randomMovement === 3) {
+                setInterval(() => {
+                    zombie.moveRight();
+
+                }, 3000);
+            } else if (randomMovement === 2) {
+                setInterval(() => {
+                    zombie.moveDown();
+
+                }, 3000);
+            } else if (randomMovement < 2) {
+                setInterval(() => {
+                    zombie.moveUp();
+
+                }, 3000);
+            }
+            // Detects Collision between zombie and player
+            if (
+                player.positionX < zombie.positionX + zombie.width &&
+                player.positionX + player.width > zombie.positionX &&
+                player.positionY < zombie.positionY + zombie.height &&
+                player.positionY + player.height > zombie.positionY
+            ) {
+                console.log("game over");
+                // location.href = "gameOver.html";
+            }
+
+
+        })
+    }
+    //requestes antimation fram with delay to make it run at a reasnobale speed
+
+    requestAnimationFrame(updateZombie)
+
+}
+
+function updateZombie() {
+    // makes the zombie follow the player
+
+    frames++;
+    if (frames % 20 === 0) {
+        zombies.forEach((zombie) => {
+            let randomMovement = Math.floor(Math.random() * 10);
+            if (randomMovement > 5) {
+
+                if (player.positionX < zombie.positionX) {
+                    zombie.moveLeft();
+                } if (player.positionY < zombie.positionY) {
+                    zombie.moveDown();
+
+                } if (player.positionY > zombie.positionY) {
+                    zombie.moveUp();
+                } if (player.positionX > zombie.positionX) {
+                    zombie.moveRight();
+                }
             }
             // Detects Collision between zombie and player
             if (
@@ -62,21 +125,28 @@ function updateZombie() {
 
 let player = new Player;
 let zombies = [];
+let zombies2 = [];
+let frames = 0;
+
 let spawn = setInterval(() => {
 
     //if there is more than 100 zombies they would despawn and respawn 
     if (zombies.length <= 100) {
-        let zombie = new Zombies(player.positionX, player.positionY)
+        if (Math.floor(Math.random() * 10) > 5) {
+            let zombie = new Zombies(player.positionX, player.positionY, 1)
+            zombies.push(zombie)
+        } else {
+            let zombie = new Zombies(player.positionX, player.positionY, 2)
+            zombies.push(zombie)
+        }
 
-        zombies.push(zombie)
 
     } else {
         clearInterval(spawn);
     }
 
-}, 100);
+}, 400);
 
-let frameZombie = 0;
 const keysPressed = {};
 
 // Track key states
@@ -87,7 +157,6 @@ document.addEventListener("keydown", (e) => {
 document.addEventListener("keyup", (e) => {
     keysPressed[e.code] = false;
 });
-let frames = 0;
 
 
 requestAnimationFrame(updatePlayer);
@@ -96,14 +165,7 @@ requestAnimationFrame(updateZombie);
 
 
 /*
-    1) zombies and player arent very smooth, can i make it better?
-    2) page still moves a bit to the bottom and right side. why?
-    3) how to create a spawn free zone around the player? (tried using reverse detection)
-    4) better to use dispaly hidden than new page to save a score(when i make one)
-
-
-
+    
     Score:
     - 1) localstorage + redirect
-    - 2) dom manipulation
  */
