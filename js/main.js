@@ -48,7 +48,7 @@ function updateZombie() {
                 player.positionY + player.height > zombie.positionY
             ) {
                 console.log("game over");
-                location.href = "gameover.html";
+                // location.href = "gameOver.html";
             }
 
 
@@ -62,19 +62,14 @@ function updateZombie() {
 
 let player = new Player;
 let zombies = [];
-
 let spawn = setInterval(() => {
 
     //if there is more than 100 zombies they would despawn and respawn 
-    if (zombies.length <= 10) {
-        let zombie = new Zombies
-        if (player.positionX < zombie.positionX + zombie.width &&
-            player.positionX + player.width > zombie.positionX &&
-            player.positionY < zombie.positionY + zombie.height &&
-            player.positionY + player.height > zombie.positionY) {
+    if (zombies.length <= 100) {
+        let zombie = new Zombies(player.positionX, player.positionY)
 
-            zombies.push(zombie)
-        }
+        zombies.push(zombie)
+
     } else {
         clearInterval(spawn);
     }
