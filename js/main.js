@@ -1,25 +1,36 @@
+// Function to update player position
+function updatePlayer() {
+    frames++;
+    if (frames % 3 === 0) {
 
 
-let player = new Player;
-let zombies = [];
+        if (keysPressed["ArrowLeft"] && player.positionX > 0) {
+            player.moveLeft();
+        }
+        if (keysPressed["ArrowRight"] && player.positionX < 100 - player.width) {
+            player.moveRight();
+        }
+        if (keysPressed["ArrowUp"] && player.positionY < 100) {
+            player.moveUp();
+        }
+        if (keysPressed["ArrowDown"] && player.positionY > 0 + player.width) {
+            player.moveDown();
+        }
+    }
+    // Request the next animation frame 
 
-let spawn = setInterval(() => {
-    //if there is more than 100 zombies they would despawn and respawn 
-    if (zombies.length <= 100) {
-        zombies.push(new Zombies)
-    } 
-    
-}, 100);
+    requestAnimationFrame(updatePlayer)
 
-let frameZombie = 0;
+}
+
 function updateZombie() {
-        // makes the zombie follow the player
+    // makes the zombie follow the player
 
-        frames++;
-        if(frames % 10 === 0){
+    frames++;
+    if (frames % 8 === 0) {
         zombies.forEach((zombie) => {
-            
-            if (player.positionX < zombie.positionX ) {
+
+            if (player.positionX < zombie.positionX) {
                 zombie.moveLeft();
             } if (player.positionY < zombie.positionY) {
                 zombie.moveDown();
@@ -31,25 +42,46 @@ function updateZombie() {
             }
             // Detects Collision between zombie and player
             if (
-                player.positionX  < zombie.positionX + zombie.width &&
+                player.positionX < zombie.positionX + zombie.width &&
                 player.positionX + player.width > zombie.positionX &&
                 player.positionY < zombie.positionY + zombie.height &&
                 player.positionY + player.height > zombie.positionY
-            ){
+            ) {
                 console.log("game over");
-              //  location.href = "gameover.html";
-           } 
-        
-     
-    })}
-    //requestes antimation fram with delay to make it run at a reasnobale speed
-    
-            requestAnimationFrame(updateZombie)
+                location.href = "gameover.html";
+            }
 
-  
+
+        })
+    }
+    //requestes antimation fram with delay to make it run at a reasnobale speed
+
+    requestAnimationFrame(updateZombie)
+
 }
 
+let player = new Player;
+let zombies = [];
 
+let spawn = setInterval(() => {
+
+    //if there is more than 100 zombies they would despawn and respawn 
+    if (zombies.length <= 10) {
+        let zombie = new Zombies
+        if (player.positionX < zombie.positionX + zombie.width &&
+            player.positionX + player.width > zombie.positionX &&
+            player.positionY < zombie.positionY + zombie.height &&
+            player.positionY + player.height > zombie.positionY) {
+
+            zombies.push(zombie)
+        }
+    } else {
+        clearInterval(spawn);
+    }
+
+}, 100);
+
+let frameZombie = 0;
 const keysPressed = {};
 
 // Track key states
@@ -62,34 +94,6 @@ document.addEventListener("keyup", (e) => {
 });
 let frames = 0;
 
-// Function to update player position
-function updatePlayer() {
-    frames++;
-    if(frames % 3 === 0){
-        
-    
-    if (keysPressed["ArrowLeft"] && player.positionX > 0 ) {
-        player.moveLeft();
-    }
-    if (keysPressed["ArrowRight"] && player.positionX < 100 - player.width) {
-        player.moveRight();
-    }
-    if (keysPressed["ArrowUp"]&& player.positionY < 100) {
-        player.moveUp();
-    }
-    if (keysPressed["ArrowDown"]&& player.positionY > 0 + player.width) {
-        player.moveDown();
-    }
-    }
-    // Request the next animation frame 
-    
-   
-        
-    
-    
-        requestAnimationFrame(updatePlayer)
-
-}
 
 requestAnimationFrame(updatePlayer);
 
