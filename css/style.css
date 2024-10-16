@@ -1,21 +1,41 @@
-body{
-    margin:0;
-    padding:0;
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-#gameBoard{
-    width:100vw;
-    height: 100vh;
-    position:relative;
+#gameBoard {
+    width: 90vw;
+    height: 90vh;
+    position: relative;
+    background-color: lawngreen;
 }
 
-#player{
-    background-color: black;
-    position:absolute;
-
-}
-
-.zombie{
-    background-color: green;
+#player {
+    background: url(../png-clipart-dora-the-explorer-thumbnail-removebg-preview.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
     position: absolute;
+    background-size: contain;
+
+}
+
+.zombie {
+    background: url(../png-clipart-plants-vs-zombie-character-illustration-plants-vs-zombies-2-it-s-about-time-plants-vs-zombies-garden-warfare-birthday-versus-plants-vs-zombies-garden-warfare-anniversary-thumbnail-removebg.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    position: absolute;
+    background-size: contain;
+
+}
+
+.zombie2 {
+    background: url(../png-clipart-plants-versus-zombie-zombie-art-plants-vs-zombies-2-it-s-about-time-plants-vs-zombies-garden-warfare-2-minecraft-zombie-game-mammal-thumbnail-removebg-preview.png);
+    background-size: 100%;
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+
 }
