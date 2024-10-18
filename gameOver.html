@@ -3,12 +3,23 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="./css/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>You Lost</title>
 </head>
 
 <body>
-    <a href="./index.html">Return to game</a>
+    <div id="gameover">
+        <div id="image"></div>
+        <h1 id="viewScore">Score:</h1>
+        <span>Would you like to <a href="./index.html">play again?</a>
+        </span>
+    </div>
+    <script>
+        const score = localStorage.getItem("score");
+        let view = document.getElementById("viewScore");
+        view.innerText = `Score : ${score}`;
+    </script>
 </body>
 
 </html>

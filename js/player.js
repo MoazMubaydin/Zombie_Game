@@ -1,7 +1,7 @@
 class Player {
     constructor() {
-        this.width = 3;
-        this.height = 6;
+        this.width = 4;
+        this.height = 8;
         this.positionX = 50 - Math.floor(this.width / 2);
         this.positionY = 50 - Math.floor(this.height / 2);
         this.createDomElements();
@@ -42,7 +42,7 @@ class Player {
 
     }
     moveRight() {
-        if (this.positionX < 90 - this.width) {
+        if (this.positionX < 100 - this.width) {
             this.positionX++;
             this.domElement.style.left = this.positionX + "vw";
         }

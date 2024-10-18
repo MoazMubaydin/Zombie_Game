@@ -1,7 +1,7 @@
 // Function to update player position
 function updatePlayer() {
-    frames++;
-    if (frames % 3 === 0) {
+    framesPlayer++;
+    if (framesPlayer % 4 === 0) {
 
 
         if (keysPressed["ArrowLeft"] && player.positionX > 0) {
@@ -19,133 +19,217 @@ function updatePlayer() {
     }
     // Request the next animation frame 
 
-    requestAnimationFrame(updatePlayer)
+    // requestAnimationFrame(updatePlayer)
 
 }
+
+
 
 function updateZombie() {
     // makes the zombie follow the player
 
-    frames++;
-    if (frames % 10 === 0) {
-        zombies.forEach((zombie) => {
-            let randomMovement = Math.floor(Math.random() * 10);
-            if (randomMovement > 5) {
-
-                if (player.positionX < zombie.positionX) {
-                    zombie.moveLeft();
-                } if (player.positionY < zombie.positionY) {
-                    zombie.moveDown();
-
-                } if (player.positionY > zombie.positionY) {
-                    zombie.moveUp();
-                } if (player.positionX > zombie.positionX) {
-                    zombie.moveRight();
-                }
-            } else if (randomMovement === 4) {
-                setInterval(() => {
-                    zombie.moveLeft();
-
-                }, 3000);
-            } else if (randomMovement === 3) {
-                setInterval(() => {
-                    zombie.moveRight();
-
-                }, 3000);
-            } else if (randomMovement === 2) {
-                setInterval(() => {
-                    zombie.moveDown();
-
-                }, 3000);
-            } else if (randomMovement < 2) {
-                setInterval(() => {
-                    zombie.moveUp();
-
-                }, 3000);
-            }
-            // Detects Collision between zombie and player
+    framesZombie1++;
+    if (framesZombie1 % 10 === 0) {
+        zombies.forEach((zombie, position) => {
+            let randomMovement = Math.floor(Math.random() * 4);
+            let zombieRect = zombie.domElement.getBoundingClientRect();
             if (
                 player.positionX < zombie.positionX + zombie.width &&
                 player.positionX + player.width > zombie.positionX &&
                 player.positionY < zombie.positionY + zombie.height &&
                 player.positionY + player.height > zombie.positionY
             ) {
-                console.log("game over");
-                // location.href = "gameOver.html";
+                lostLife();
+
             }
+            if (zombie.type === 1) {
 
-
-        })
-    }
-    //requestes antimation fram with delay to make it run at a reasnobale speed
-
-    requestAnimationFrame(updateZombie)
-
-}
-
-function updateZombie() {
-    // makes the zombie follow the player
-
-    frames++;
-    if (frames % 20 === 0) {
-        zombies.forEach((zombie) => {
-            let randomMovement = Math.floor(Math.random() * 10);
-            if (randomMovement > 5) {
-
-                if (player.positionX < zombie.positionX) {
-                    zombie.moveLeft();
-                } if (player.positionY < zombie.positionY) {
+                if (randomMovement === 0) {
                     zombie.moveDown();
 
-                } if (player.positionY > zombie.positionY) {
-                    zombie.moveUp();
-                } if (player.positionX > zombie.positionX) {
+                } else if (randomMovement === 1) {
+
                     zombie.moveRight();
+
+
+                } else if (randomMovement === 2) {
+
+                    zombie.moveLeft();
+
+
+                } else if (randomMovement === 3) {
+                    zombie.moveUp();
+
                 }
             }
+
+            // Check for collision
+            bullets.forEach((projectile, bulletIndex) => {
+
+                if (
+                    projectile.positionX < zombieRect.left + zombieRect.width &&
+                    projectile.positionX + 5 > zombieRect.left &&
+                    projectile.positionY < zombieRect.top + zombieRect.height &&
+                    projectile.positionY + 5 > zombieRect.top
+                ) {
+                    console.log('HIT');
+
+                    score.innerHTML = `Score: ${points += 5}`
+                    zombie.delete();
+                    zombies.splice(position, 1);
+
+                    projectile.element.remove();
+                    bullets.splice(bulletIndex, 1);
+                }
+            });
+
+
             // Detects Collision between zombie and player
-            if (
-                player.positionX < zombie.positionX + zombie.width &&
-                player.positionX + player.width > zombie.positionX &&
-                player.positionY < zombie.positionY + zombie.height &&
-                player.positionY + player.height > zombie.positionY
-            ) {
-                console.log("game over");
-                // location.href = "gameOver.html";
-            }
+
 
 
         })
     }
     //requestes antimation fram with delay to make it run at a reasnobale speed
+    // requestAnimationFrame(updateZombie)
+}
+function updateZombie2() {
+    framesZombie2++;
+    // if (framesZombie2 % 10 === 0) {
+    zombies2.forEach((zombie, zombieIndex) => {
+        // zombies2.forEach((element) => {
+        //  if (
+        //    element.positionX < zombie.positionX + zombie.width &&
+        ///   element.positionX + element.width > zombie.positionX &&
+        //   element.positionY < zombie.positionY + zombie.height &&
+        //  element.positionY + element.height > zombie.positionY && element.type === 2
+        //) {
+        let zombieRect = zombie.domElement.getBoundingClientRect();
 
-    requestAnimationFrame(updateZombie)
+        if (
+            player.positionX < zombie.positionX + zombie.width &&
+            player.positionX + player.width > zombie.positionX &&
+            player.positionY < zombie.positionY + zombie.height &&
+            player.positionY + player.height > zombie.positionY
+        ) {
+            lostLife();
+        }
+        //} else {
+        if (player.positionX < zombie.positionX) {
+            zombie.moveLeft();
+        } if (player.positionY < zombie.positionY) {
+            zombie.moveDown();
+
+        } if (player.positionY > zombie.positionY) {
+            zombie.moveUp();
+        } if (player.positionX > zombie.positionX) {
+            zombie.moveRight();
+        }
+        bullets.forEach((projectile, bulletIndex) => {
+
+            if (
+                projectile.positionX < zombieRect.left + zombieRect.width &&
+                projectile.positionX + 5 > zombieRect.left &&
+                projectile.positionY < zombieRect.top + zombieRect.height &&
+                projectile.positionY + 5 > zombieRect.top
+            ) {
+                console.log('HIT');
+
+                zombie.delete();
+                zombies2.splice(zombieIndex, 1);
+                score.innerHTML = `Score: ${points += 5}`
+
+                projectile.element.remove();
+                bullets.splice(bulletIndex, 1);
+            }
+        });
+        //})
+
+    })
+    // }
+
+    // requestAnimationFrame(updateZombie2)
 
 }
+function lostLife() {
+    lives--
+    zombies.forEach((element) => {
+        element.delete();
+        delete element;
+
+    })
+    zombies2.forEach((element) => {
+        element.delete();
+        delete element;
+    })
+    bullets.forEach((bullet) => {
+        bullet.element.remove()
+        delete bullet;
+    })
+
+    player.domElement.remove();
+    zombies = [];
+    zombies2 = [];
+    bullets = [];
+    framesPlayer = 0;
+    framesZombie1 = 0;
+    framesZombie2 = 0;
+
+    player = new Player;
+    gamer = document.getElementById("player")
+    let lostlife = document.getElementById(`life${lives}`)
+    lostlife.remove()
+    if (lives <= 0) {
+        const score = localStorage.setItem("score", points)
+        location.href = "gameOver.html";
+    }
+}
+
+
+
+let livesContainer = document.getElementById("lives")
 
 let player = new Player;
+let lives = 3;
 let zombies = [];
 let zombies2 = [];
-let frames = 0;
-
-let spawn = setInterval(() => {
-
-    //if there is more than 100 zombies they would despawn and respawn 
-    if (zombies.length <= 100) {
-        if (Math.floor(Math.random() * 10) > 5) {
-            let zombie = new Zombies(player.positionX, player.positionY, 1)
-            zombies.push(zombie)
-        } else {
-            let zombie = new Zombies(player.positionX, player.positionY, 2)
-            zombies.push(zombie)
-        }
+let bullets = [];
+let framesPlayer = 0;
+let framesZombie1 = 0;
+let framesZombie2 = 0;
+let score = document.getElementById("score")
+let points = 0
+for (let i = 0; i < lives; i++) {
+    let displayLives = document.createElement("div");
+    displayLives.classList.add("heart");
+    displayLives.id = `life${i}`;
+    livesContainer.appendChild(displayLives)
 
 
-    } else {
-        clearInterval(spawn);
+}
+let spawn1 = setInterval(() => {
+
+    if (zombies.length <= 20) {
+
+        let zombie = new Zombies(player.positionX, player.positionY, 1)
+        zombies.push(zombie)
     }
+    // } else {
+    //     clearInterval(spawn1);
+    // }
 
-}, 400);
+}, 800);
+
+let spawn2 = setInterval(() => {
+    if (zombies2.length <= 10) {
+
+        let zombie = new Zombies(player.positionX, player.positionY, 2)
+        zombies2.push(zombie)
+
+    }    // } else {
+    //     clearInterval(spawn2);
+    // }
+}, 2000);
 
 const keysPressed = {};
 
@@ -159,13 +243,71 @@ document.addEventListener("keyup", (e) => {
 });
 
 
-requestAnimationFrame(updatePlayer);
+// requestAnimationFrame(updatePlayer);
+// requestAnimationFrame(updateZombie2)
+// requestAnimationFrame(updateZombie);
 
-requestAnimationFrame(updateZombie);
+setInterval(() => {
+    updatePlayer()
+    updateZombie()
+    updateProjectiles();
+}, 20)
+
+setInterval(() => {
+
+    updateZombie2()
+}, 400)
+
+let gameBoard = document.getElementById("gameBoard");
+const viewportWidth = window.innerWidth;
+const viewportHeight = window.innerHeight;
+let gamer = document.getElementById("player")
+
+document.addEventListener("click", (e) => {
+
+    let gamerRect = gamer.getBoundingClientRect();
+
+    console.log(gamerRect)
+    const targetX = e.clientX;
+    const targetY = e.clientY;
+    const projectile = {
+        positionX: gamerRect.left + gamerRect.width / 2,
+        positionY: gamerRect.bottom - gamerRect.height / 2,
+        targetX: targetX,
+        targetY: targetY,
+        element: document.createElement("div")
+    };
+    projectile.element.className = "shot";
+    gameBoard.appendChild(projectile.element);
+    bullets.push(projectile);
+});
+
+function updateProjectiles() {
+    bullets.forEach((projectile, index) => {
+
+        if (projectile.targetX < projectile.positionX) {
+            projectile.positionX--
+
+        } if (projectile.targetY < projectile.positionY) {
+            projectile.positionY--
+        } if (projectile.targetY > projectile.positionY) {
+            projectile.positionY++
+        } if (projectile.targetX > projectile.positionX) {
+            projectile.positionX++
+        }
 
 
-/*
-    
-    Score:
-    - 1) localstorage + redirect
- */
+        projectile.element.style.left = projectile.positionX + "px";
+        projectile.element.style.top = projectile.positionY + "px";
+
+        if (Math.floor(projectile.positionX) === Math.floor(projectile.targetX) && Math.floor(projectile.positionY) === Math.floor(projectile.targetY)) {
+            projectile.element.remove(); // Remove from DOM
+            bullets.splice(index, 1); // Remove from the array
+        }
+
+
+    });
+
+}
+
+

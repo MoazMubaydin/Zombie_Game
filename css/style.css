@@ -4,38 +4,121 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+}
+
+#gameover {
+    background-color: gray;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+}
+
+#image {
+    background-image: url(../gameover.png);
+    width: 50vw;
+    height: 60vh;
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: flex;
+
+}
+
+h1 {
+    border: 2px solid black;
+    padding: 10px;
+}
+
+span {
+    font-size: 18px;
+}
+
+a {
+    color: blue;
+    text-decoration: none;
 }
 
 #gameBoard {
-    width: 90vw;
+    width: 100vw;
     height: 90vh;
     position: relative;
-    background-color: lawngreen;
+    background-image: url(../2202_w026_n002_1449b_p1_1449.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 #player {
     background: url(../png-clipart-dora-the-explorer-thumbnail-removebg-preview.png);
-    background-size: 100%;
     background-repeat: no-repeat;
     position: absolute;
     background-size: contain;
 
+}
+
+#gun {
+    background-color: purple;
 }
 
 .zombie {
     background: url(../png-clipart-plants-vs-zombie-character-illustration-plants-vs-zombies-2-it-s-about-time-plants-vs-zombies-garden-warfare-birthday-versus-plants-vs-zombies-garden-warfare-anniversary-thumbnail-removebg.png);
-    background-size: 100%;
     background-repeat: no-repeat;
     position: absolute;
     background-size: contain;
-
+    background-position: center;
+    min-width: calc(3em /2);
 }
 
 .zombie2 {
     background: url(../png-clipart-plants-versus-zombie-zombie-art-plants-vs-zombies-2-it-s-about-time-plants-vs-zombies-garden-warfare-2-minecraft-zombie-game-mammal-thumbnail-removebg-preview.png);
-    background-size: 100%;
     position: absolute;
+    background-position: center;
+    background-size: contain;
+    min-width: calc(3vw /2);
+
+    background-repeat: no-repeat;
+
+}
+
+#footer {
+    background-color: black;
+    width: 100vw;
+    height: 10vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+#score {
+    color: white;
+    margin-right: 1em;
+}
+
+#lives {
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+}
+
+.heart {
+    width: 8vw;
+    height: 6vh;
     background-size: contain;
     background-repeat: no-repeat;
+    background-image: url(../pngegg.png);
+}
+
+.shot {
+    background-image: url(../bullet.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: absolute;
+    width: 2vw;
+    height: 2vh;
 
 }
