@@ -14,4 +14,6 @@ You start in the middle of the map, zombies will start appearing from their hidi
 - incase you get caught by the zombies dont worry, You have 3 lives! 
 
 [Play Zombie survival here](https://moazmubaydin.github.io/Zombie_Game/)
+
+
 ![gameplay](./Gameplay.png)
